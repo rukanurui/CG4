@@ -71,19 +71,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     input = new Input();
     input->Initialize(winApp);
 
-   //オーディオの初期化
-    audio = new Audio();
-    audio->Initialize();
-  
-  /*  XAudio2VoiceCallback voiceCallback;*/
+  // //オーディオの初期化
+  //  audio = new Audio();
+  //  audio->Initialize();
+  //
+  ///*  XAudio2VoiceCallback voiceCallback;*/
 
-    
+  //  
 
-    // 音声読み込み
-     audio->LoadWave("Alarm01.wav");
+  //  // 音声読み込み
+  //   audio->LoadWave("Alarm01.wav");
 
-    // 音声再生
-      audio->PlayWave("Alarm01.wav");
+  //  // 音声再生
+  //    audio->PlayWave("Alarm01.wav");
 
     // DirectX初期化処理　ここまで
 #pragma endregion DirectX初期化処理
