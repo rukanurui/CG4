@@ -101,13 +101,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
    /* Sprite* sprite = Sprite::Create(spriteCommon, 0);*/
     spriteCommon->LoadTexture(1, L"Resources/circle.png");
+    spriteCommon->LoadTexture(4, L"Resources/canon.png");
 
     Sprite* sprite = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
+    Sprite* sprite2 = Sprite::Create(spriteCommon, 4, { 0,0 }, false, false);
+    Sprite* sprite3 = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
 
     sprite->SetPosition({ (float)(600) ,(float)(10) ,0 });
     sprite->SetSize({ (float)(60), (float)(60) });
-    
     sprite->TransferVertexBuffer();
+
+    sprite2->SetPosition({ (float)(0) ,(float)(450) ,0 });
+    sprite2->TransferVertexBuffer();
+    sprite3->SetPosition({ (float)(100) ,(float)(600) ,0 });
+    sprite3->TransferVertexBuffer();
 
     //// スプライトの生成
     //for (int i = 0; i < 20; i++)
@@ -137,9 +144,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     float x = 600;
     float y = 10;
 
+    float bulx = 130;
+    float buly = 540;
    
+
     float Gvel = 9.8f/60;//重力加速度
     float G = 0;
+
+    float vel = 15.0f;
+    float Fvely = -10.0;
+
 
 
 
@@ -168,12 +182,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //    sprite->Update();
         //}
         sprite->Update();
+        sprite2->Update();
+        sprite3->Update();
 
         G += Gvel;
 
+
+        bulx += vel;
+
         y += G;
 
+        buly += Fvely+G;
+
         sprite->SetPosition({ x,y,1 });
+        sprite3->SetPosition({ bulx,buly,1 });
 
         const int cycle = 540; // 繰り返しの周期
         counter++;
@@ -244,6 +266,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         }*/
 
         sprite->Draw();
+        
+        sprite3->Draw();
+        sprite2->Draw();
 
         // デバッグテキスト描画
         debugText->DrawAll();
@@ -272,6 +297,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //}
         //sprites.clear();
         delete sprite;
+        delete sprite2;
+        delete sprite3;
         delete spriteCommon;
 
 
