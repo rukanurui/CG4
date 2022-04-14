@@ -30,7 +30,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Input* input = nullptr;
     WinApp* winApp = nullptr;
     DirectXCommon* dxCommon = nullptr;
-    Audio* audio = nullptr;
+    /*Audio* audio = nullptr;*/
 
 #pragma region WindowsAPI初期化
     winApp = new WinApp();
@@ -94,37 +94,55 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //// スプライト共通データ生成
     //spriteCommon = SpriteCommonCreate(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
     // スプライト共通テクスチャ読み込み
-    spriteCommon->LoadTexture(0, L"Resources/texture.png");
+    /*spriteCommon->LoadTexture(0, L"Resources/texture.png");
     spriteCommon->LoadTexture(1, L"Resources/house.png");
 
-    std::vector<Sprite*> sprites;
+    std::vector<Sprite*> sprites;*/
 
    /* Sprite* sprite = Sprite::Create(spriteCommon, 0);*/
-   
+    spriteCommon->LoadTexture(1, L"Resources/circle.png");
 
-    // スプライトの生成
-    for (int i = 0; i < 20; i++)
-    {
-        int texNumber = 0;
-        Sprite* sprite = Sprite::Create(spriteCommon,texNumber, { 0,0 }, false, false);
+    Sprite* sprite = Sprite::Create(spriteCommon, 1, { 0,0 }, false, false);
 
-        // スプライトの座標変更
-        sprite->SetPosition({ (float)(rand() % 1280) ,(float)(rand() % 720) ,0 });
-        sprite->SetRotation({ (float)(rand() % 360) });
-        sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-        //sprites[i].isInvisible = true;
+    sprite->SetPosition({ (float)(600) ,(float)(10) ,0 });
+    sprite->SetSize({ (float)(60), (float)(60) });
+    
+    sprite->TransferVertexBuffer();
+
+    //// スプライトの生成
+    //for (int i = 0; i < 20; i++)
+    //{
+    //    int texNumber = 0;
+    //    Sprite* sprite = Sprite::Create(spriteCommon,texNumber, { 0,0 }, false, false);
+
+    //    // スプライトの座標変更
+    //    sprite->SetPosition({ (float)(rand() % 1280) ,(float)(rand() % 720) ,0 });
+    //    sprite->SetRotation({ (float)(rand() % 360) });
+    //    sprite->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+    //    //sprites[i].isInvisible = true;
   
-        // 頂点バッファに反映
-        sprite->TransferVertexBuffer();
+    //    // 頂点バッファに反映
+    //    sprite->TransferVertexBuffer();
 
-        sprites.push_back(sprite);
-        sprite->SetPosition({ 500,300,0 });
-    }
+    //    sprites.push_back(sprite);
+    //    sprite->SetPosition({ 500,300,0 });
+    //}
 
   
 #pragma endregion 描画初期化処理
 
     int counter = 0; // アニメーションの経過時間カウンター
+
+    //ゲーム用変数
+    float x = 600;
+    float y = 10;
+
+   
+    float Gvel = 9.8f/60;//重力加速度
+    float G = 0;
+
+
+
 
     while (true)  // ゲームループ
     {
@@ -143,12 +161,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         input->Update();
 
         //object3d更新
-        object3d->Update();
+       /* object3d->Update();*/
 
-        //スプライト更新
-        for (auto& sprite : sprites) {
-            sprite->Update();
-        }
+        ////スプライト更新
+        //for (auto& sprite : sprites) {
+        //    sprite->Update();
+        //}
+        sprite->Update();
+
+        G += Gvel;
+
+        y += G;
+
+        sprite->SetPosition({ x,y,1 });
 
         const int cycle = 540; // 繰り返しの周期
         counter++;
@@ -197,7 +222,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         Object3d::PreDraw(dxCommon->GetCommandList());
 
         //3dオブジェクトの描画
-        object3d->Draw();
+        /*object3d->Draw();*/
 
         ///<summary>
         ///ここに3dオブジェクトの描画処理を追加できる
@@ -214,9 +239,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         // スプライト描画
 
-        for (auto& sprite : sprites) {
+        /*for (auto& sprite : sprites) {
             sprite->Draw();
-        }
+        }*/
+
+        sprite->Draw();
 
         // デバッグテキスト描画
         debugText->DrawAll();
@@ -231,7 +258,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         delete dxCommon;
 
         //3dオブジェクト解放
-        delete object3d;
+        /*delete object3d;*/
         //3dモデル解放
         delete Model;
 
@@ -239,17 +266,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         debugText->Finalize();
         delete debugText;
 
-        //スプライト解放
-        for (auto& sprite : sprites) {
-            delete sprite;
-        }
-        sprites.clear();
+        ////スプライト解放
+        //for (auto& sprite : sprites) {
+        //    delete sprite;
+        //}
+        //sprites.clear();
+        delete sprite;
         delete spriteCommon;
 
 
         //オーディオ解放
-        audio->Finalize();
-        delete audio;
+   /*     audio->Finalize();
+        delete audio;*/
 
 
         winApp->Finalize();
