@@ -17,6 +17,7 @@
 #include "DebugText.h"
 #include "Audio.h"
 
+#include "fbxsdk.h"
 
 
 using namespace DirectX;
@@ -26,11 +27,13 @@ using namespace Microsoft::WRL;
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
+    FbxManager* fbxManager = FbxManager::Create();
+
     //ポインタ置き場
     Input* input = nullptr;
     WinApp* winApp = nullptr;
     DirectXCommon* dxCommon = nullptr;
-    Audio* audio = nullptr;
+   /* Audio* audio = nullptr;*/
 
 #pragma region WindowsAPI初期化
     winApp = new WinApp();
@@ -72,18 +75,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     input->Initialize(winApp);
 
    //オーディオの初期化
-    audio = new Audio();
-    audio->Initialize();
+   /* audio = new Audio();
+    audio->Initialize();*/
   
   /*  XAudio2VoiceCallback voiceCallback;*/
 
     
 
     // 音声読み込み
-     audio->LoadWave("Alarm01.wav");
+    // audio->LoadWave("Alarm01.wav");
 
-    // 音声再生
-      audio->PlayWave("Alarm01.wav");
+    //// 音声再生
+    //  audio->PlayWave("Alarm01.wav");
 
     // DirectX初期化処理　ここまで
 #pragma endregion DirectX初期化処理
@@ -248,8 +251,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
         //オーディオ解放
-        audio->Finalize();
-        delete audio;
+       /* audio->Finalize();
+        delete audio;*/
 
 
         winApp->Finalize();
