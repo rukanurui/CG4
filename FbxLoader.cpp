@@ -115,6 +115,17 @@ void FbxLoader::ParseNodeRecursive(Model* model, FbxNode* fbxNode, Node* parent 
         node.globalTransform *= parent->globalTransform;
     }
 
+    //FBXノードのメッシュ情報を解析
+    FbxNodeAttribute* fbxNodeAttribute = fbxNode->GetNodeAttribute();
+
+    if (fbxNodeAttribute) {
+        if (fbxNodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh) {
+            model->meshNode = &node;
+            ParseMesh(model, fbxNode);
+        }
+    }
+
+    //子ノードに対して再帰呼び出し
     for (int i = 0; i < fbxNode->GetChildCount(); i++) {
         ParseNodeRecursive(model, fbxNode->GetChild(i),&node);
     }

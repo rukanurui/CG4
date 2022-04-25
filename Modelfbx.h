@@ -26,6 +26,20 @@ class Model
 public:
 	friend class FbxLoader;
 
+	struct VertexPosNormalUV
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 uv;
+	};
+
+	//メッシュを持つノード
+	Node* meshNode = nullptr;
+	//頂点データ配列
+	std::vector<VertexPosNormalUV> vertices;
+	//頂点インデックス配列
+	std::vector<unsigned short> indices;
+
 private:
 	std::string name;
 	//ノード配列

@@ -45,4 +45,14 @@ public:
 	void LoadModelFromFile(const string& modelName);
 	//再帰的にノード構成を解析
 	void ParseNodeRecursive(Model* model, FbxNode* fbxNode,Node* parent=nullptr);
+	//メッシュ読み取り
+	void ParseMesh(Model* model, FbxNode* fbxNode);
+	//頂点座標読み取り
+	void ParseMeshVertices(Model* model, FbxMesh* fbxMesh);
+	//面情報読み取り
+	void ParceMeshFaces(Model* model, FbxMesh* fbxMesh);
+	//マテリアル読み取り
+	void ParseMaterial(Model* model, FbxNode* fbxNode);
+	//テクスチャ読み込み
+	void LoadTexture(Model* model, const std::string& fullpath);
 };
