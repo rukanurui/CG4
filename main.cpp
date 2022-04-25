@@ -17,7 +17,9 @@
 #include "DebugText.h"
 #include "Audio.h"
 
-#include "fbxsdk.h"
+#include "FbxLoader.h"
+
+#include"FbxLoader.h"
 
 
 using namespace DirectX;
@@ -27,8 +29,7 @@ using namespace Microsoft::WRL;
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
-    FbxManager* fbxManager = FbxManager::Create();
-
+   
     //ポインタ置き場
     Input* input = nullptr;
     WinApp* winApp = nullptr;
@@ -73,6 +74,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //入力の初期化
     input = new Input();
     input->Initialize(winApp);
+
+    FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
+
+    FbxLoader::GetInstance()->LoadModelFromFile("cube");
+   
 
    //オーディオの初期化
    /* audio = new Audio();
@@ -254,6 +260,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
        /* audio->Finalize();
         delete audio;*/
 
+        FbxLoader::GetInstance()->Finalize();
 
         winApp->Finalize();
         delete winApp;
