@@ -141,15 +141,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int counter = 0; // アニメーションの経過時間カウンター
 
     //ゲーム用変数
-    float x = 600;
-    float y = 10;
+    float x = 300;
+    float y = 300;
+    float fvelx = 10;
+    
+
+    float friction = - 0.1;
+    float omosa = 1;
+    float pfri = friction * omosa;
 
     float bulx = 130;
     float buly = 540;
    
 
     float Gvel = 9.8f/60;//重力加速度
-    float G = 0;
+    float G= 0;
 
     float vel = 15.0f;
     float Fvely = -10.0;
@@ -187,10 +193,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         G += Gvel;
 
+        if (fvelx >0)
+        {
+            fvelx += pfri;
+        }
+        else
+        {
+            fvelx = 0;
+        }
+        
+
+        x += fvelx;
 
         bulx += vel;
 
-        y += G;
+        //y += G;
 
         buly += Fvely+G;
 
