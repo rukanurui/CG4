@@ -6,7 +6,7 @@
 #include <d3dx12.h>
 #include <string>
 #include "Modelfbx.h"
-
+#include<cassert>
 
 class FbxLoader
 {
@@ -44,15 +44,19 @@ public:
 	//ファイルからFBXモデル読み込み
 	void LoadModelFromFile(const string& modelName);
 	//再帰的にノード構成を解析
-	void ParseNodeRecursive(Model* model, FbxNode* fbxNode,Node* parent=nullptr);
+	void ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode,Node* parent=nullptr);
 	//メッシュ読み取り
-	void ParseMesh(Model* model, FbxNode* fbxNode);
+	void ParseMesh(FbxModel* model, FbxNode* fbxNode);
 	//頂点座標読み取り
-	void ParseMeshVertices(Model* model, FbxMesh* fbxMesh);
+	void ParseMeshVertices(FbxModel* model, FbxMesh* fbxMesh);
 	//面情報読み取り
-	void ParceMeshFaces(Model* model, FbxMesh* fbxMesh);
+	void ParceMeshFaces(FbxModel* model, FbxMesh* fbxMesh);
 	//マテリアル読み取り
-	void ParseMaterial(Model* model, FbxNode* fbxNode);
+	void ParseMaterial(FbxModel* model, FbxNode* fbxNode);
 	//テクスチャ読み込み
-	void LoadTexture(Model* model, const std::string& fullpath);
+	void LoadTexture(FbxModel* model, const std::string& fullpath);
+	//ディレクトリを含んだファイルパスからファイル名を抽出する
+	std::string ExtractFileName(const std::string& path);
+	//テクスチャがない場合の標準テクスチャ名
+	static const string defaultTextureFileName;
 };

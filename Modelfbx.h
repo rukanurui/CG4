@@ -2,6 +2,11 @@
 #include <string>
 #include <DirectXMath.h>
 #include<vector>
+#include <DirectXTex.h>
+#include <Windows.h>
+#include <wrl.h>
+#include <d3d12.h>
+#include <d3dx12.h>
 
 struct Node
 {
@@ -21,7 +26,7 @@ struct Node
 	Node* parent = nullptr;
 };
 
-class Model
+class FbxModel
 {
 public:
 	friend class FbxLoader;
@@ -32,6 +37,15 @@ public:
 		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT2 uv;
 	};
+
+	//アンビエント影響度
+	DirectX::XMFLOAT3 ambient={1,1,1};
+	//ディフューズ影響度
+	DirectX::XMFLOAT3 diffuse = { 1,1,1 };
+	//テクスチャメタデータ
+	DirectX::TexMetadata meteadeta = {};
+	//スクラッチイメージ
+	DirectX::ScratchImage scratchImg = {};
 
 	//メッシュを持つノード
 	Node* meshNode = nullptr;

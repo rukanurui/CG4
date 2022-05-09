@@ -9,12 +9,14 @@
 #include<cassert>
 
 
+
 using namespace std;
 
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+
 
 
 class model
@@ -27,6 +29,8 @@ private: // エイリアス
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
+
+	
 
 public: // サブクラス
 	
@@ -78,6 +82,7 @@ public://静的メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw(ID3D12GraphicsCommandList*cmdList,UINT rootParamIndexMaterial);
+
 
 
 private://静的メンバ変数
