@@ -19,7 +19,8 @@
 
 #include "FbxLoader.h"
 
-#include"FbxLoader.h"
+#include "FBXobj3d.h"
+#include "Modelfbx.h"
 
 
 using namespace DirectX;
@@ -34,6 +35,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Input* input = nullptr;
     WinApp* winApp = nullptr;
     DirectXCommon* dxCommon = nullptr;
+    FbxModel* model1 = nullptr;
+    FBXobj3d* object1 = nullptr;
    /* Audio* audio = nullptr;*/
 
 #pragma region WindowsAPI初期化
@@ -75,10 +78,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     input = new Input();
     input->Initialize(winApp);
 
-    FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
+    
 
-    FbxLoader::GetInstance()->LoadModelFromFile("cube");
-   
 
    //オーディオの初期化
    /* audio = new Audio();
@@ -130,6 +131,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         sprite->SetPosition({ 500,300,0 });
     }
 
+    //スプライト
+
+    FBXobj3d::CreateGraphicsPipeline();
+
+    FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
+
+    //FbxLoader::GetInstance()->LoadModelFromFile("cube");
+    model1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+
+    object1 = new FBXobj3d;
+    object1->Initialize();
+    object1->SetModel(model1);
+   
+
+    
   
 #pragma endregion 描画初期化処理
 
@@ -261,6 +277,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         delete audio;*/
 
         FbxLoader::GetInstance()->Finalize();
+
+        delete object1;
+        delete model1;
 
         winApp->Finalize();
         delete winApp;

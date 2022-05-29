@@ -34,7 +34,7 @@ void FbxLoader::Finalize()
     fbxManager->Destroy();
 }
 
-void FbxLoader::LoadModelFromFile(const string& modelName)
+FbxModel* FbxLoader::LoadModelFromFile(const string& modelName)
 {
     //モデルと同じ名前のフォルダから読み込む
     const string directorypath = baseDirectory + modelName + "/";
@@ -67,6 +67,10 @@ void FbxLoader::LoadModelFromFile(const string& modelName)
     //fbxシーン解放
     fbxScece->Destroy();
 
+    //バッファ生成
+    model->CreateBuffers(device);
+
+    return model;
 
 }
 
@@ -300,7 +304,7 @@ void FbxLoader::LoadTexture(FbxModel* model, const std::string& fullpath)
 {
     HRESULT result = S_FALSE;
     //WICテクスチャのロード
-    TexMetadata& metadata = model->meteadeta;
+    TexMetadata& metadata = model->metadeta;
     ScratchImage& scratchImg = model->scratchImg;
     //ユニコード文字列に変換
     wchar_t wfilepath[128];
