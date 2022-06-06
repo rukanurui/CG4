@@ -7,6 +7,8 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <d3dx12.h>
+#include "fbxsdk.h"
+#include<cassert>
 
 struct Node
 {
@@ -44,17 +46,36 @@ public:
 	using string = std::string;
 	template<class T> using vector = std::vector<T>;
 
+public://メンバ定数
+	//ボーンインデックスの最大数
+	static const int MAX_BONE_INDICES = 4;
 
-
-	struct VertexPosNormalUV
+	struct VertexPosNormalUVSkin
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT2 uv;
+		float boneweight[MAX_BONE_INDICES];//重み
+		UINT boneIndex[MAX_BONE_INDICES];//ボーン番号
+	};
+
+	//ボーン構造体
+	struct Bone
+	{
+		//名前
+		std::string name;
+		//初期姿勢の逆行列
+		DirectX::XMMATRIX invInitialPose;
+		//クラスター(FBX側のポーン情報)
+		FbxCluster* fbxCluster;
+		//コンストラクタ
+		Bone(const std::string& name) {
+			this->name=name;
+		}
 	};
 
 
-private:
+private://メンバ変数
 	std::string name;
 	//ノード配列
 	std::vector<Node> nodes;
@@ -79,14 +100,9 @@ private:
 	DirectX::TexMetadata metadeta = {};
 	//スクラッチイメージ
 	DirectX::ScratchImage scratchImg = {};
-
 	//メッシュを持つノード
 	Node* meshNode = nullptr;
-	//頂点データ配列
-	std::vector<VertexPosNormalUV> vertices;
-	//頂点インデックス配列
-	std::vector<unsigned short> indices;
-
+	
 
 public:
 	//バッファ生成
@@ -95,5 +111,19 @@ public:
 	void FbxDraw(ID3D12GraphicsCommandList* cmdList);
 	//モデルの変形行列取得
 	const XMMATRIX& GetModelTransform() { return meshNode->globalTransform; }
+	//頂点データ配列
+	std::vector<VertexPosNormalUVSkin> vertices;
+	//頂点インデックス配列
+	std::vector<unsigned short> indices;
+	//ボーン配列
+	std::vector<Bone> bones;
+	//getter
+	std::vector<Bone>& GetBones() { return bones; }
+	//FBXシーン
+	FbxScene* fbxScene = nullptr;
+	//getter
+	FbxScene* GetFbxScene() { return fbxScene; }
+	//デストラクタ
+	~FbxModel();
 
 };
