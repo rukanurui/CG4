@@ -6,9 +6,6 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "model.h"
-#include "Modelfbx.h"
-#include "FbxLoader.h"
-#include "fbxsdk.h"
 
 
 /// <summary>
@@ -44,16 +41,6 @@ private: // 定数
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
 	static const int vertexCount = planeCount * 3;		// 頂点数
-
-
-public:
-	//ボーンの最大数
-	static const int MAX_BONES = 32;
-
-	struct ConstBufferDataSkin
-	{
-		XMMATRIX bones[MAX_BONES];
-	};
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -139,7 +126,7 @@ private: // 静的メンバ変数
 
 
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
-	ComPtr<ID3D12Resource> constBuffSkin;//スキンの定数バッファ
+	
 
 
 
@@ -196,9 +183,6 @@ public: // メンバ関数
 
 	void SetModel(model* Model) { this->Model = Model; }
 
-	//Fbxアニメーション再生
-	void PlayAnimation();
-
 private: // メンバ変数
 	// 色
 	XMFLOAT4 color = { 1,1,1,1 };
@@ -214,16 +198,4 @@ private: // メンバ変数
 	Object3d* parent = nullptr;
 	//モデル
 	model* Model = nullptr;
-	//モデル
-	FbxModel* fbxmodel = nullptr;
-	//1フレームの時間
-	FbxTime frameTime;
-	//アニメーション開始時間
-	FbxTime startTime;
-	//アニメーション終了時間
-	FbxTime endTime;
-	//現在時間(アニメーション)
-	FbxTime currentTime;
-	//アニメーション再生中
-	bool isPlay = false;
 };
